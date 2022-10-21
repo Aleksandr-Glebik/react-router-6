@@ -3,13 +3,13 @@ import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
 import BlogPage from './pages/BlogPage'
 import NoFoundPage from './pages/NoFoundPage'
-import Loyout from './components/Layout'
+import Layout from './components/Layout'
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<Loyout />}>
+        <Route path='/' element={<Layout />}>
           <Route index element={<HomePage />}/>
           <Route path='about' element={<AboutPage />}/>
           <Route path='posts' element={<BlogPage />}/>
