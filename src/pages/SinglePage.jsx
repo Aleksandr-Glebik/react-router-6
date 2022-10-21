@@ -1,5 +1,5 @@
 import React, { Suspense } from "react"
-import { useNavigate, Link, useLoaderData, Await, useAsyncValue } from "react-router-dom"
+import { useNavigate, Link, useLoaderData, Await, useAsyncValue, defer } from "react-router-dom"
 
 const Post = () => {
     const post = useAsyncValue()
@@ -12,8 +12,25 @@ const Post = () => {
     )
 }
 
+const Comments = () => {
+    const comments = useAsyncValue()
+
+    return (
+        <div>
+            <h2>Comments</h2>
+            {comments.map( comment => (
+                <>
+                    <h3>{comment.email}</h3>
+                    <h4>{comment.name}</h4>
+                    <p>{comment.body}</p>
+                </>
+            ))}
+        </div>
+    )
+}
+
 const SinglePage = () => {
-    const {post, id} = useLoaderData()
+    const {post, id, comments} = useLoaderData()
     const navigate = useNavigate()
 
     const goBack = () => navigate(-1)
@@ -21,9 +38,14 @@ const SinglePage = () => {
     return (
         <div>
             <button onClick={goBack}>Go back</button>
-            <Suspense fallback={<h3>Loading...</h3>}>
+            <Suspense fallback={<h3>Post is loading...</h3>}>
                 <Await resolve={post}>
                     <Post />
+                </Await>
+            </Suspense>
+            <Suspense fallback={<h3>Comments is loading...</h3>}>
+                <Await resolve={comments}>
+                    <Comments />
                 </Await>
             </Suspense>
             <Link to={`/posts/${id}/edit`}>Edit this post</Link>
@@ -36,10 +58,14 @@ async function getPostById(id) {
     const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
     return res.json()
 }
+async function getCommentsByPost(id) {
+    const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}/comments`)
+    return res.json()
+}
 
 export const postLoader = async ({params}) => {
     const id = params.id
-    return {post: getPostById(id), id}
+    return defer({post: await getPostById(id), id, comments: getCommentsByPost(id)})
 }
 
 export default SinglePage

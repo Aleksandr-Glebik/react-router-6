@@ -1,5 +1,5 @@
 import React, { Suspense } from "react"
-import { Link, useLoaderData, useSearchParams, defer, Await } from "react-router-dom"
+import { Link, useLoaderData, useSearchParams, Await } from "react-router-dom"
 import BlogFilter from "../components/BlogFilter"
 
 const BlogPage = () => {
@@ -54,9 +54,9 @@ async function getPosts() {
 }
 
 const blogLoader = async () => {
-    return defer({
+    return {
         posts: getPosts()
-    })
+    }
 }
 
 export {blogLoader}
