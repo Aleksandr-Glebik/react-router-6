@@ -1,5 +1,5 @@
 import React, { Suspense } from "react"
-import { Link, useLoaderData, useSearchParams, Await } from "react-router-dom"
+import { Link, useLoaderData, useSearchParams, Await, json } from "react-router-dom"
 import BlogFilter from "../components/BlogFilter"
 
 const BlogPage = () => {
@@ -50,16 +50,21 @@ const BlogPage = () => {
 
 async function getPosts() {
     const res = await fetch('https://jsonplaceholder.typicode.com/postsssssssss')
-
-    if(!res.ok) {
-        throw new Response('', {status: res.status, statusText: 'Not found posts'})
-    }
+    // if(!res.ok) {
+    //     throw new Response('', {status: res.status, statusText: 'Not found posts'})
+    // }
     return res.json()
 }
 
 const blogLoader = async () => {
+    const posts = getPosts()
+
+    if (!posts.length) {
+        throw json({message: 'Not Found', reason: 'Wrong URL'}, {status: 404})
+    }
+
     return {
-        posts: getPosts()
+        posts: posts
     }
 }
 
