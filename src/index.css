@@ -29,25 +29,21 @@ header > a {
 header > a:hover {
   text-decoration: underline;
 }
-
 h1 {
   text-align: center;
   margin-top: 20px;
 }
-
 .container {
   max-width: 900px;
   padding-left: 2rem;
   padding-right: 2rem;
   margin: 0 auto;
 }
-
 main {
-  min-height: calc(100vh - 85px - 22px);
+  min-height: calc(100vh - 85px - 22px - 63px);
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
-
 main a {
   text-decoration: none;
   color: var(--color-bg);
@@ -55,8 +51,20 @@ main a {
 main a:hover {
   text-decoration: underline;
 }
-
 .active {
   color: var(--color-active);
   cursor: default;
+}
+footer {
+  background-color: var(--color-bg);
+  padding: 2rem 0;
+  text-align: center;
+}
+footer > a {
+  color: white;
+  text-decoration: none;
+  padding: 0 1rem;
+}
+footer > a:hover {
+  text-decoration: underline;
 }
