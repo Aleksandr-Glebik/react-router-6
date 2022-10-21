@@ -1,36 +1,30 @@
-import React,{useState, useEffect} from "react"
-import { useParams, useNavigate, Link } from "react-router-dom"
+import React from "react"
+import { useNavigate, Link, useLoaderData } from "react-router-dom"
 
 const SinglePage = () => {
-    const {id} = useParams()
+    const {post, id} = useLoaderData()
     const navigate = useNavigate()
 
-    const [post, setPost] = useState(null)
-
     const goBack = () => navigate(-1)
-    // const goHome = () => navigate('/', {replace: true})
-
-    useEffect( () => {
-        fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
-            .then(res => res.json())
-            .then(data => setPost(data))
-    }, [id])
 
     return (
         <div>
             <button onClick={goBack}>Go back</button>
-            {/* Bad link */}
-            {/* <button onClick={goHome}>Go Home</button> */}
-            {post && (
-                <>
-                    <h1>{post.title}</h1>
-                    <p>{post.body}</p>
-                    <Link to={`/posts/${id}/edit`}>Edit this post</Link>
-                </>
-            )}
+            <h1>{post.title}</h1>
+            <p>{post.body}</p>
+            <Link to={`/posts/${id}/edit`}>Edit this post</Link>
         </div>
 
     )
+}
+
+export const postLoader = async ({request, params}) => {
+    // console.log('post', {request, params});
+    const id = params.id
+    const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
+    const post = await res.json()
+
+    return {post, id}
 }
 
 export default SinglePage
