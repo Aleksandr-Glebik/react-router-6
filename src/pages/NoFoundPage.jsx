@@ -1,10 +1,11 @@
 import React from "react"
+import {Link} from 'react-router-dom'
 
 const NoFoundPage = () => {
     return (
-        <div>
+        <div className="container">
             <h1>NoFoundPage</h1>
-            <p>This page doesn't exist. Go <a href="/"></a></p>
+            <p>This page doesn't exist. Go <Link to="/"></Link></p>
         </div>
     )
 }
