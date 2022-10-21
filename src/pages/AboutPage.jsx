@@ -1,5 +1,5 @@
 import React from "react"
-import { Routes, Route, Link } from 'react-router-dom'
+import { Outlet, Link } from 'react-router-dom'
 
 const AboutPage = () => {
     return (
@@ -14,10 +14,7 @@ const AboutPage = () => {
                     <Link to={'team'}>Our team</Link>
                 </li>
             </ul>
-            <Routes>
-                <Route path={'contacts'} element={<p>Our contact</p>} />
-                <Route path={'team'} element={<p>Our team</p>} />
-            </Routes>
+            <Outlet />
         </div>
     )
 }
