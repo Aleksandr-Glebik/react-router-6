@@ -53,8 +53,7 @@ async function getPosts() {
     return res.json()
 }
 
-const blogLoader = async ({request, params}) => {
-    // console.log('blog', {request, params})
+const blogLoader = async () => {
     return defer({
         posts: getPosts()
     })
