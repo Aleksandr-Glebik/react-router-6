@@ -1,13 +1,12 @@
-import React from "react"
-import { Link, useLoaderData, useSearchParams } from "react-router-dom"
+import React, { Suspense } from "react"
+import { Link, useLoaderData, useSearchParams, defer, Await } from "react-router-dom"
 import BlogFilter from "../components/BlogFilter"
 
 const BlogPage = () => {
-    const posts =  useLoaderData()
+    const {posts} =  useLoaderData()
     const [searchParams, setSearchParams] = useSearchParams()
 
     const postQuery = searchParams.get('post') || ''
-    //url.by /posts?post=23&data=sashaFront
     const latest = searchParams.has('latest')
 
     const startsFrom = latest ? 80 : 1
@@ -27,24 +26,38 @@ const BlogPage = () => {
                 Add new post
             </Link>
 
-            {
-                posts.filter(
-                    post => post.title.includes(postQuery.toLocaleLowerCase()) && post.id >= startsFrom
-                ).map( post => (
-                    <Link key={post.id} to={`/posts/${post.id}`}>
-                        <li>{post.title}</li>
-                    </Link>
-                ))
-            }
-
+            <Suspense fallback={<h3>Loading...</h3>}>
+                <Await resolve={posts}>
+                    {
+                        (resolvedPosts) => (
+                        <>
+                        {
+                            resolvedPosts.filter(
+                                post => post.title.includes(postQuery.toLocaleLowerCase()) && post.id >= startsFrom
+                            ).map( post => (
+                                <Link key={post.id} to={`/posts/${post.id}`}>
+                                    <li>{post.title}</li>
+                                </Link>
+                            ))
+                        }
+                        </>)
+                    }
+                </Await>
+            </Suspense>
         </div>
     )
 }
 
-const blogLoader = async ({request, params}) => {
-    // console.log('blog', {request, params})
+async function getPosts() {
     const res = await fetch('https://jsonplaceholder.typicode.com/posts')
     return res.json()
+}
+
+const blogLoader = async ({request, params}) => {
+    // console.log('blog', {request, params})
+    return defer({
+        posts: getPosts()
+    })
 }
 
 export {blogLoader}
