@@ -3,7 +3,7 @@ import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
 import BlogPage, { blogLoader } from './pages/BlogPage'
 import SinglePage, { postLoader } from './pages/SinglePage'
-import CreatePost from './pages/CreatePost'
+import CreatePost, { createPostAction } from './pages/CreatePost'
 import EditPost from './pages/EditPost'
 import NoFoundPage from './pages/NoFoundPage'
 import Layout from './components/Layout'
@@ -27,7 +27,7 @@ const router = createBrowserRouter(createRoutesFromElements(
       <RequireAuth>
         <CreatePost />
       </RequireAuth>
-    }/>
+    } action={createPostAction} />
     <Route path='login' element={<LoginPage />}/>
     <Route path='*' element={<NoFoundPage />}/>
     </Route>
