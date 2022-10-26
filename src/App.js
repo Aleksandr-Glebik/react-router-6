@@ -4,7 +4,7 @@ import AboutPage from './pages/AboutPage'
 import BlogPage, { blogLoader } from './pages/BlogPage'
 import SinglePage, { postLoader } from './pages/SinglePage'
 import CreatePost, { createPostAction } from './pages/CreatePost'
-import EditPost from './pages/EditPost'
+import EditPost, { updatePostAction } from './pages/EditPost'
 import NoFoundPage from './pages/NoFoundPage'
 import Layout from './components/Layout'
 import LoginPage from './pages/LoginPage'
@@ -21,7 +21,7 @@ const router = createBrowserRouter(createRoutesFromElements(
     </Route>
     <Route path='about-us' element={<Navigate to='/about' replace />}/>
     <Route path='posts' element={<BlogPage />} loader={blogLoader} errorElement={<ErrorPage />}/>
-    <Route path='posts/:id/edit' element={<EditPost />} />
+    <Route path='posts/:id/edit' element={<EditPost />} loader={postLoader} action={updatePostAction}/>
     <Route path='posts/:id' element={<SinglePage />} loader={postLoader}/>
     <Route path='posts/new' element={
       <RequireAuth>
